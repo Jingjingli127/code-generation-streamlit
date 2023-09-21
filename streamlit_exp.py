@@ -179,35 +179,11 @@ Output code and simple explanation.
     return prompt
 
 
-
 def generate_response(ds_agent,prompt):
     ds_agent.add_user(prompt)
     resp = ds_agent.run() #chat + add
     return ds_agent,resp
     
-def convert_to_json(code_resp,format_syst=None):
-    """
-    code_resp: string, LLM output from DS agent
-    format_syst: string, system message for formatter agent
-    """
-    format_syst = format_syst or "You are good at following output format instructions in user message strictly. Don't write extra content other than specified."
-    # prompt design
-    format_prompt = f"""Extract code and explanation from the given string. \
-Construct response in JSON format: 
-{{"code":[generated code from given string],
-"explanation": [simple explanation]}}
-
-String: {code_resp}
-"""
-    while True:
-        format_agent = AiAgent(model="gpt-4").create_messages(format_syst)
-        format_agent.add_user(format_prompt)
-        resp_json = format_agent.run() #chat + add
-        try:
-            json.loads(resp_json)
-            return format_agent,resp_json
-        except json.decoder.JSONDecodeError:
-            continue
 
 def extract_elements(resp_json):
     """
