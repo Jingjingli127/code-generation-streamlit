@@ -29,7 +29,9 @@ st.title("Code Generation Using GPT-4")
 
 # Set up OpenAI API credentials
 # Use Option # 1 - Using Streamlit secrets
-openai.api_key = st.secrets['api_secret']
+# openai.api_key = st.secrets['api_secret']
+# After deploying on github: access secrets by querying st.secrets dict
+openai.api_key = st.secrets['api_key']
 
 
 # Data input
